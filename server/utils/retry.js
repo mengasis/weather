@@ -1,8 +1,8 @@
-async function retry(fn, onFailure) {
+async function retry(fn = new Promise(), onFailure) {
   try {
     return await fn()
   } catch (err) {
-    onFailure(err)
+    if (!!onFailure) onFailure(err)
     return retry(fn, onFailure)
   }
 }
