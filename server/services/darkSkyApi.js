@@ -1,5 +1,5 @@
 const https = require('https')
-const config = require('../config')
+const config = require('../config/api')
 
 function getData(latitude, longitude) {
   const url = `${config.API_HOST}/${config.API_KEY}s/${latitude},${longitude}`
