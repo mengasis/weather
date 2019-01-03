@@ -14,25 +14,20 @@ function getCurrentData(latitude = '', longitude = '') {
       const { statusCode } = res
 
       if (statusCode >= 400 && statusCode <= 500)
-        reject(
-          new Error(
-            `How unfortunate! The API Request Failed. Latitude: ${latitude} & Longitude: ${longitude}`
-          ),
-          {
-            latitude,
-            longitude
-          }
-        )
+        reject(new Error(statusCode), {
+          latitude,
+          longitude
+        })
 
       res.on('data', d => {
         data.push(d)
       })
 
-      res.on('end', () => resolve(Buffer.concat(data)))
+      res.on('end', () => resolve(JSON.parse(Buffer.concat(data).toString())))
 
       res.on('error', reject)
     })
   })
 }
 
-module.exports = { getData }
+module.exports = { getCurrentData }
