@@ -1,4 +1,6 @@
 const { getCurrentData } = require('./darkSkyApi')
+const cities = require('../config/cities')
+const retry = require('../utils/retry')
 
 async function getWeather(city = {}) {
   try {
@@ -13,4 +15,17 @@ async function getWeather(city = {}) {
   }
 }
 
-module.exports = { getWeather }
+function getAllWeather() {
+  return Promise.all(
+    cities.map(async city =>
+      retry(
+        () => getWeather(city),
+        err => {
+          console.error('Error: ' + err)
+        }
+      )
+    )
+  )
+}
+
+module.exports = { getWeather, getAllWeather }
