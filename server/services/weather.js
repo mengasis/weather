@@ -23,6 +23,11 @@ function getAllWeather() {
         }
       )
     )
+  ).then(results =>
+    results.reduce((acc, current) => {
+      acc[current.id] = current
+      return acc
+    }, {})
   )
 }
 
