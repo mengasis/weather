@@ -1,21 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import IconWeather from './IconWeather'
 
 const Container = styled.div`
   display: grid;
-  background: #46a6c9;
-  grid-template: repeat(3, 1fr) / repeat(2, 50%);
+  background-image: url(${({ background }) => background});
+  grid-template: repeat(3, 134px) / repeat(2, 50%);
   grid-template-areas:
     'title title '
-    'time image'
-    'temperature image';
+    'time time'
+    '. temperature';
   justify-items: center;
   align-items: center;
 `
 
-const Image = styled.img`
-  max-width: 110px;
+const WeatherSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-conent: center;
+  align-items: center;
+  grid-area: ${({ area }) => area || ''};
 `
 
 const Text = styled.span`
@@ -25,22 +30,19 @@ const Text = styled.span`
   color: #fff;
 `
 
-const CityView = ({ name, temperature, time }) => {
+const CityView = ({ name, temperature, time, icon, image }) => {
   return (
-    <Container>
+    <Container background={image}>
       <Text area="title" size="36px">
         {name}
       </Text>
-      <Text area="time" size="18px">
-        {temperature}
-      </Text>
+      <WeatherSection area="time">
+        <IconWeather name={icon} />
+        <Text size="24px">{temperature}</Text>
+      </WeatherSection>
       <Text area="temperature" size="42px" weight={900}>
         {time}
       </Text>
-      <Image
-        area="image"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Comunas_de_Santiago.svg/350px-Comunas_de_Santiago.svg.png"
-      />
     </Container>
   )
 }
@@ -48,12 +50,16 @@ const CityView = ({ name, temperature, time }) => {
 CityView.deafultProps = {
   name: '',
   temperature: '',
-  time: ''
+  time: '',
+  icon: '',
+  image: ''
 }
 
 CityView.propTypes = {
   name: PropTypes.string,
   temperature: PropTypes.string,
-  time: PropTypes.string
+  time: PropTypes.string,
+  icon: PropTypes.string,
+  image: PropTypes.string
 }
 export default CityView
