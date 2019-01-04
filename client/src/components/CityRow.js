@@ -12,9 +12,9 @@ const Text = styled.span`
   font-weight: ${({ bold }) => (bold ? 900 : 100)};
 `
 
-const CityRow = ({ name, temperature, time }) => {
+const CityRow = ({ name, temperature, time, onSelect }) => {
   return (
-    <Container>
+    <Container onClick={onSelect}>
       <Text>{name}</Text>
       <Text bold>{temperature}</Text>
       <Text bold>{time}</Text>
@@ -31,7 +31,8 @@ CityRow.deafultProps = {
 CityRow.propTypes = {
   name: PropTypes.string,
   temperature: PropTypes.string,
-  time: PropTypes.string
+  time: PropTypes.string,
+  onSelect: PropTypes.func.isRequired
 }
 
 export default CityRow

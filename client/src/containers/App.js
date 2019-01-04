@@ -19,13 +19,22 @@ class App extends Component {
     subscribeToWeather((err, data) => this.setState({ weather: data }))
   }
 
+  onSelectCity = id =>
+    this.setState({
+      currentCity: this.state.weather[id]
+    })
+
   render() {
     return (
       <Container>
         <CityView {...this.state.currentCity} />
         <ListCity>
           {cities.map(city => (
-            <CityRow key={city.id} {...this.state.weather[city.id]} />
+            <CityRow
+              key={city.id}
+              onSelect={() => this.onSelectCity(city.id)}
+              {...this.state.weather[city.id]}
+            />
           ))}
         </ListCity>
       </Container>
