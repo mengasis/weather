@@ -8,8 +8,10 @@ import CityView from '../components/CityView'
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 2fr 1fr;
+  grid-template: 400px 1fr / minmax(300px, 1024px);
   height: 100vh;
+  justify-content: center;
+  align-content: center;
 `
 
 class App extends Component {
