@@ -15,13 +15,17 @@ const Container = styled.div`
 class App extends Component {
   state = { weather: {} }
 
-  componentDidMount() {
+  async componentDidMount() {
     subscribeToWeather((err, data) => this.setState({ weather: data }))
+    this.onSelectCity('cl')
   }
 
   onSelectCity = id =>
     this.setState({
-      currentCity: this.state.weather[id]
+      currentCity: {
+        ...this.state.weather[id],
+        image: cities[id].image(document.getElementById('root').offsetWidth)
+      }
     })
 
   render() {
@@ -29,11 +33,12 @@ class App extends Component {
       <Container>
         <CityView {...this.state.currentCity} />
         <ListCity>
-          {cities.map(city => (
+          {Object.keys(cities).map(keyCity => (
             <CityRow
-              key={city.id}
-              onSelect={() => this.onSelectCity(city.id)}
-              {...this.state.weather[city.id]}
+              key={keyCity}
+              onSelect={() => this.onSelectCity(keyCity)}
+              name={cities[keyCity].name}
+              {...this.state.weather[keyCity]}
             />
           ))}
         </ListCity>
