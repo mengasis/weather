@@ -15,7 +15,7 @@ class App extends Component {
         <span>Weather</span>
         {cities.map(city => (
           <p key={city.id}>
-            {city.name}: {this.state.weather[city.id]}
+            {city.name}: {JSON.stringify(this.state.weather[city.id])}
           </p>
         ))}
       </div>

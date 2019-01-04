@@ -1,35 +1,27 @@
-const https = require('https')
-const config = require('../config')
+const axios = require('axios')
+const { API_HOST, API_KEY } = require('../config/api')
+const customError = require('../utils/customError')
 
-function getData(latitude, longitude) {
-  const url = `${config.API_HOST}/${config.API_KEY}s/${latitude},${longitude}`
+function getCurrentData(latitude = '', longitude = '') {
+  const url = `${API_HOST}/${API_KEY}/${latitude},${longitude}`
+  const opts = { url, params: { exclude: ['minutely', 'hourly', 'daily', 'flags'] } }
 
-  return new Promise((resolve, reject) => {
-    https.get(url, res => {
-      let data = []
+  return axios(url, opts)
+    .then(({ data }) => data)
+    .catch(err => {
+      const { response = { status: 0 } } = err
 
-      const { statusCode } = res
+      switch (response.status) {
+        case 404:
+          throw customError.NOT_FOUND
 
-      if (statusCode >= 400 && statusCode <= 500)
-        reject(
-          new Error(
-            `How unfortunate! The API Request Failed. Latitude: ${latitude} & Longitude: ${longitude}`
-          ),
-          {
-            latitude,
-            longitude
-          }
-        )
+        case 403:
+          throw customError.FORBIDDEN
 
-      res.on('data', d => {
-        data.push(d)
-      })
-
-      res.on('end', () => resolve(Buffer.concat(data)))
-
-      res.on('error', reject)
+        default:
+          throw customError.createError(err)
+      }
     })
-  })
 }
 
-module.exports = { getData }
+module.exports = { getCurrentData }
