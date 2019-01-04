@@ -3,15 +3,13 @@ const cities = require('../config/cities')
 const retry = require('../utils/retry')
 
 async function getWeather(city = {}) {
-  try {
-    const { currently } = await getCurrentData(city.latitude, city.longitude)
-    return {
-      ...city,
-      time: currently.time,
-      temperature: currently.temperature
-    }
-  } catch (error) {
-    throw new Error(`ERROR!: ${error} in the ${city.name} request`)
+  const { currently = {} } = await getCurrentData(city.latitude, city.longitude)
+  const { time, temperature } = currently
+
+  return {
+    ...city,
+    time,
+    temperature
   }
 }
 
@@ -21,7 +19,7 @@ function getAllWeather() {
       retry(
         () => getWeather(city),
         err => {
-          console.error('Error: ' + err)
+          console.error('Error -> ', err)
         }
       )
     )
