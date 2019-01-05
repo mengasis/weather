@@ -3,6 +3,7 @@ const moment = require('moment-timezone')
 const cities = require('../config/cities')
 const retry = require('../utils/retry')
 const customError = require('../utils/customError')
+const redis = require('./redis')
 
 async function getWeather(city = {}) {
   //Intentional error with 10% probability
@@ -29,7 +30,17 @@ function getAllWeather() {
       retry(
         () => getWeather(city),
         err => {
-          console.error('Error -> ', err)
+          console.error(err)
+          if (!!err && err.name === 'UNFORTUNATE')
+            redis.hsetAsync(
+              'api.errors',
+              Date.now(),
+              JSON.stringify({
+                type: err.name,
+                message: err.message,
+                stack: err.toString()
+              })
+            )
         }
       )
     )
