@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { API_HOST, API_KEY } = require('../config/api')
+const { API_HOST, API_KEY } = require('../config/app')
 const customError = require('../utils/customError')
 
 function getCurrentData(latitude = '', longitude = '') {

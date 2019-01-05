@@ -1,8 +1,9 @@
-const { getCurrentData } = require('./darkSkyApi')
+const { getCurrentData } = require('./darkskyAPI')
 const moment = require('moment-timezone')
 const cities = require('../config/cities')
 const retry = require('../utils/retry')
 const customError = require('../utils/customError')
+const redis = require('./redis')
 
 async function getWeather(city = {}) {
   //Intentional error with 10% probability
@@ -12,8 +13,10 @@ async function getWeather(city = {}) {
     city.latitude,
     city.longitude
   )
+
   const { temperature, icon } = currently
-  return {
+
+  const data = {
     ...city,
     icon,
     time: moment()
@@ -21,24 +24,34 @@ async function getWeather(city = {}) {
       .format('HH:mm'),
     temperature: `${parseInt(temperature)} °C`
   }
+
+  await redis.setAsync(city.id, JSON.stringify(data))
+
+  return data
 }
 
-function getAllWeather() {
+function refreshWeather() {
+  console.log('Refreshing!...')
   return Promise.all(
     cities.map(async city =>
       retry(
         () => getWeather(city),
         err => {
-          console.error('Error -> ', err)
+          console.error(err)
+          if (!!err && err.name === 'UNFORTUNATE')
+            redis.hsetAsync(
+              'api.errors',
+              Date.now(),
+              JSON.stringify({
+                type: err.name,
+                message: err.message,
+                stack: err.toString()
+              })
+            )
         }
       )
     )
-  ).then(results =>
-    results.reduce((acc, current) => {
-      acc[current.id] = current
-      return acc
-    }, {})
   )
 }
 
-module.exports = { getWeather, getAllWeather }
+module.exports = { getWeather, refreshWeather }
