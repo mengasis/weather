@@ -1,0 +1,27 @@
+# prettier-ignore
+version: '3'
+services:
+  server:
+    build: ./server
+    container_name: "server"
+    environment:
+      - API_KEY=<Add your API Key"
+      - PORT=1337
+      - REDIS_PORT=6379
+      - REDIS_HOST=cache
+    ports: 
+      - "1337:1337"
+    volumes:
+      - ./server/data/app:/usr/app/
+      - /usr/app/node_modules
+    depends_on:
+      - redisdb
+    links:
+      - redisdb
+  
+
+  redisdb:
+    image: redis:alpine
+    container_name: cache
+    ports:
+      - "6379:6379"
