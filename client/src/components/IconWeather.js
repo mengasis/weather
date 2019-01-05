@@ -26,9 +26,9 @@ const icons = {
   'partly-cloudy-night': weather_variable_halfmoon
 }
 
-const SideIconContainer = withBaseIcon({ size: 94, style: { color: '#FFF' } })
+const SideIconContainer = withBaseIcon({ size: 120, style: { color: '#FFF' } })
 
-const IconWeather = ({ name = '' }) => {
+const IconWeather = ({ name = 'clear-day' }) => {
   return <SideIconContainer icon={icons[name]} />
 }
 
