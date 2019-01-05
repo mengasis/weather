@@ -4,8 +4,10 @@ const customError = require('../utils/customError')
 
 function getCurrentData(latitude = '', longitude = '') {
   const url = `${API_HOST}/${API_KEY}/${latitude},${longitude}`
-  const opts = { url, params: { exclude: ['minutely', 'hourly', 'daily', 'flags'] } }
-
+  const opts = {
+    url,
+    params: { units: 'si', exclude: ['minutely', 'hourly', 'daily', 'flags'] }
+  }
   return axios(url, opts)
     .then(({ data }) => data)
     .catch(err => {
