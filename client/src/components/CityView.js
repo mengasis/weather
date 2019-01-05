@@ -8,9 +8,9 @@ const Container = styled.div`
   background-image: url(${({ background }) => background});
   grid-template: repeat(3, 134px) / repeat(2, 50%);
   grid-template-areas:
-    'title title '
-    'time time'
-    '. temperature';
+    'title weather '
+    '. weather'
+    'time .';
   justify-items: center;
   align-items: center;
 `
@@ -25,7 +25,7 @@ const WeatherSection = styled.div`
 
 const Text = styled.span`
   font-size: ${({ size }) => size || '15px'};
-  font-weight: ${({ weight }) => weight || 100};
+  font-weight: ${({ weight }) => weight || 500};
   grid-area: ${({ area }) => area || ''};
   color: #fff;
 `
@@ -33,14 +33,14 @@ const Text = styled.span`
 const CityView = ({ name, temperature, time, icon, image }) => {
   return (
     <Container background={image}>
-      <Text area="title" size="36px">
+      <Text area="title" size="42px" weight={100}>
         {name}
       </Text>
-      <WeatherSection area="time">
+      <WeatherSection area="weather">
         <IconWeather name={icon} />
         <Text size="24px">{temperature}</Text>
       </WeatherSection>
-      <Text area="temperature" size="42px" weight={900}>
+      <Text area="time" size="72px" weight={100}>
         {time}
       </Text>
     </Container>
