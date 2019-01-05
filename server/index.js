@@ -2,6 +2,8 @@ const socketio = require('socket.io')
 const weather = require('./services/weather')
 const cities = require('./services/cities')
 
+const appConfig = require('./config/app')
+
 const io = socketio()
 
 const init = async () => {
@@ -10,13 +12,15 @@ const init = async () => {
   await weather.refreshWeather()
 
   io.on('connection', async socket =>
-    socket.emit('weather', await weather.getAllWeather())
+    socket.emit('weather', await cities.getWeatherByCities())
   )
 
-  setInterval(async () => io.emit('weather', await weather.getAllWeather()), 10000)
+  io.emit('weather', await cities.getWeatherByCities())
 
-  io.listen(1337)
-  console.log(`App listening on port ${1337}`)
+  setInterval(async () => await weather.refreshWeather(), 10000)
+
+  io.listen(appConfig.PORT)
+  console.log(`App listening on port ${appConfig.PORT}`)
 }
 
 init()
