@@ -1,4 +1,5 @@
 const { getCurrentData } = require('./darkSkyApi')
+const moment = require('moment-timezone')
 const cities = require('../config/cities')
 const retry = require('../utils/retry')
 const customError = require('../utils/customError')
@@ -7,13 +8,18 @@ async function getWeather(city = {}) {
   //Intentional error with 10% probability
   if (Math.random() < 0.1) throw customError.UNFORTUNATE
 
-  const { currently = {} } = await getCurrentData(city.latitude, city.longitude)
-  const { time, temperature } = currently
-
+  const { currently = {}, timezone = '' } = await getCurrentData(
+    city.latitude,
+    city.longitude
+  )
+  const { temperature, icon } = currently
   return {
     ...city,
-    time,
-    temperature
+    icon,
+    time: moment()
+      .tz(timezone)
+      .format('HH:mm'),
+    temperature: `${parseInt(temperature)} °C`
   }
 }
 

@@ -24,6 +24,7 @@
   "homepage": "https://github.com/mengasis/weather#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "moment-timezone": "^0.5.23",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
