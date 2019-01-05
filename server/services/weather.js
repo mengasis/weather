@@ -30,7 +30,8 @@ async function getWeather(city = {}) {
   return data
 }
 
-function getAllWeather() {
+function refreshWeather() {
+  console.log('Refreshing!...')
   return Promise.all(
     cities.map(async city =>
       retry(
@@ -50,12 +51,7 @@ function getAllWeather() {
         }
       )
     )
-  ).then(results =>
-    results.reduce((acc, current) => {
-      acc[current.id] = current
-      return acc
-    }, {})
   )
 }
 
-module.exports = { getWeather, getAllWeather }
+module.exports = { getWeather, refreshWeather }
