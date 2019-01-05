@@ -1,4 +1,4 @@
-const { getCurrentData } = require('./darkSkyApi')
+const { getCurrentData } = require('./darkskyAPI')
 const moment = require('moment-timezone')
 const cities = require('../config/cities')
 const retry = require('../utils/retry')
@@ -13,8 +13,10 @@ async function getWeather(city = {}) {
     city.latitude,
     city.longitude
   )
+
   const { temperature, icon } = currently
-  return {
+
+  const data = {
     ...city,
     icon,
     time: moment()
@@ -22,6 +24,10 @@ async function getWeather(city = {}) {
       .format('HH:mm'),
     temperature: `${parseInt(temperature)} °C`
   }
+
+  await redis.setAsync(city.id, JSON.stringify(data))
+
+  return data
 }
 
 function getAllWeather() {
