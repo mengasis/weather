@@ -1,6 +1,22 @@
 # prettier-ignore
 version: '3'
 services:
+  client:
+    build: ./client
+    container_name: "client"
+    ports: 
+      - "80:5000"
+    environment:
+      - MODE=production
+      - HOST=127.0.0.1
+      - PORT=1337
+    volumes:
+      - ./client/data/app:/usr/app/
+      - /usr/app/node_modules
+    links:
+      - server
+    depends_on:
+      - server
   server:
     build: ./server
     container_name: "server"
