@@ -15,11 +15,18 @@ const Container = styled.div`
 `
 
 class App extends Component {
-  state = { weather: {} }
+  state = { weather: {}, currentCity: {} }
 
   async componentDidMount() {
-    subscribeToWeather((err, data) => this.setState({ weather: data }))
-    this.onSelectCity('cl')
+    await subscribeToWeather((err, data) =>
+      this.setState({ weather: data }, this.updateCurrentCity)
+    )
+  }
+
+  updateCurrentCity = () => {
+    if (Object.keys(this.state.currentCity).length === 0) return this.onSelectCity('cl')
+
+    this.onSelectCity(this.state.currentCity.id)
   }
 
   onSelectCity = id =>
