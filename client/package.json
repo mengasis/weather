@@ -13,6 +13,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "serve -s ./build -p 5000",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint"
@@ -25,5 +26,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "serve": "^10.1.1"
+  }
 }
