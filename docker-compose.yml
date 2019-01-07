@@ -1,0 +1,42 @@
+# prettier-ignore
+version: '3'
+services:
+  web:
+    build: ./client
+    container_name: "web"
+    ports: 
+      - "80:5000"
+    environment:
+      - REACT_APP_MODE=production
+      - REACT_APP_API_HOST=127.0.0.1
+      - REACT_APP_API_PORT=1337
+    volumes:
+      - ./client/data/app:/usr/app/
+      - /usr/app/node_modules
+    links:
+      - server
+    depends_on:
+      - server
+  server:
+    build: ./server
+    container_name: "server"
+    environment:
+      - API_KEY=addcc19d518e0e9e0be78415f09bebb2
+      - PORT=1337
+      - REDIS_URL=redis://cache:6379
+    ports: 
+      - "1337:1337"
+    volumes:
+      - ./server/data/app:/usr/app/
+      - /usr/app/node_modules
+    depends_on:
+      - redisdb
+    links:
+      - redisdb
+  
+
+  redisdb:
+    image: redis:alpine
+    container_name: cache
+    ports:
+      - "6379:6379"
