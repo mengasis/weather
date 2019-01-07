@@ -2,6 +2,10 @@
 
 This app get data from darksky and serves them to a client in React with websocket.
 
+![image](https://user-images.githubusercontent.com/21364178/50752123-9a1d0e80-122b-11e9-858c-f774ee4f7ff6.png)
+
+![image](https://user-images.githubusercontent.com/21364178/50752147-c0db4500-122b-11e9-8003-2c0449f28995.png)
+
 ### Running the app
 
 You must set your API KEY in the docker-compose
@@ -39,9 +43,9 @@ Login with your user
 
 Set environment variables
 
-    $ heroku config:set MODE="production"
-    $ heroku config:set HOST=<API HOST>
-    $ heroku config:set PORT=<API PORT>
+    $ heroku config:set REACT_APP_MODE="production"
+    $ heroku config:set REACT_APP_HOST=<API HOST>
+    $ heroku config:set REACT_APP_PORT=<API PORT>
 
 Deploy application
 
