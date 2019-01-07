@@ -1,4 +1,5 @@
-const { getCurrentData } = require('./darkskyAPI')
+const { getCurrentData } = require('./darksky')
+
 const moment = require('moment-timezone')
 const cities = require('../config/cities')
 const retry = require('../utils/retry')
