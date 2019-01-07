@@ -4,8 +4,7 @@ export default createGlobalStyle`
 body {
   margin: 0;
   padding: 0;
-  font-family: "Comic Sans MS",
-    sans-serif;
+  font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
