@@ -15,9 +15,10 @@ const init = async () => {
     socket.emit('weather', await cities.getWeatherByCities())
   )
 
-  io.emit('weather', await cities.getWeatherByCities())
-
-  setInterval(async () => await weather.refreshWeather(), 10000)
+  setInterval(async () => {
+    await weather.refreshWeather()
+    io.emit('weather', await cities.getWeatherByCities())
+  }, 10000)
 
   io.listen(appConfig.PORT)
   console.log(`App listening on port ${appConfig.PORT}`)

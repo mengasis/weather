@@ -5,6 +5,7 @@ import { cities, subscribeToWeather } from '../api'
 import ListCity from '../components/ListCity'
 import CityRow from '../components/CityRow'
 import CityView from '../components/CityView'
+import Loading from '../components/Loading'
 
 const Container = styled.div`
   display: grid;
@@ -15,11 +16,18 @@ const Container = styled.div`
 `
 
 class App extends Component {
-  state = { weather: {} }
+  state = { weather: {}, currentCity: {} }
 
   async componentDidMount() {
-    subscribeToWeather((err, data) => this.setState({ weather: data }))
-    this.onSelectCity('cl')
+    await subscribeToWeather((err, data) =>
+      this.setState({ weather: data }, this.updateCurrentCity)
+    )
+  }
+
+  updateCurrentCity = () => {
+    if (Object.keys(this.state.currentCity).length === 0) return this.onSelectCity('cl')
+
+    this.onSelectCity(this.state.currentCity.id)
   }
 
   onSelectCity = id =>
@@ -31,6 +39,8 @@ class App extends Component {
     })
 
   render() {
+    if (Object.keys(this.state.weather).length === 0) return <Loading />
+
     return (
       <Container>
         <CityView {...this.state.currentCity} />
