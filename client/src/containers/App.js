@@ -5,6 +5,7 @@ import { cities, subscribeToWeather } from '../api'
 import ListCity from '../components/ListCity'
 import CityRow from '../components/CityRow'
 import CityView from '../components/CityView'
+import Loading from '../components/Loading'
 
 const Container = styled.div`
   display: grid;
@@ -38,6 +39,8 @@ class App extends Component {
     })
 
   render() {
+    if (Object.keys(this.state.weather).length === 0) return <Loading />
+
     return (
       <Container>
         <CityView {...this.state.currentCity} />
