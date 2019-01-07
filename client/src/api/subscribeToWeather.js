@@ -1,8 +1,11 @@
 import io from 'socket.io-client'
 
-const { MODE, HOST, PORT = 1337 } = process.env
+const { REACT_APP_MODE, REACT_APP_API_HOST, REACT_APP_API_PORT = 1337 } = process.env
 
-const baseUrl = MODE === 'production' ? `${HOST}:${PORT}` : `http://localhost:${PORT}`
+const baseUrl =
+  REACT_APP_MODE === 'production'
+    ? `${REACT_APP_API_HOST}:${REACT_APP_API_PORT}`
+    : `http://localhost:${REACT_APP_API_PORT}`
 
 const socket = io(baseUrl)
 

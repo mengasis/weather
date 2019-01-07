@@ -1,15 +1,15 @@
 # prettier-ignore
 version: '3'
 services:
-  client:
+  web:
     build: ./client
-    container_name: "client"
+    container_name: "web"
     ports: 
       - "80:5000"
     environment:
-      - MODE=production
-      - HOST=127.0.0.1
-      - PORT=1337
+      - REACT_APP_MODE=production
+      - REACT_APP_API_HOST=127.0.0.1
+      - REACT_APP_API_PORT=1337
     volumes:
       - ./client/data/app:/usr/app/
       - /usr/app/node_modules
