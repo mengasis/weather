@@ -1,7 +1,7 @@
 const redis = require('redis')
-const { REDIS_HOST = '127.0.0.1', REDIS_PORT = 6379 } = process.env
+const { REDIS_URL } = process.env
 
-const client = redis.createClient(REDIS_PORT, REDIS_HOST)
+const client = redis.createClient(REDIS_URL)
 
 client.on('connect', function() {
   console.log('Redis client connected')

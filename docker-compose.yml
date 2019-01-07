@@ -21,10 +21,9 @@ services:
     build: ./server
     container_name: "server"
     environment:
-      - API_KEY=<Add your API Key"
+      - API_KEY=addcc19d518e0e9e0be78415f09bebb2
       - PORT=1337
-      - REDIS_PORT=6379
-      - REDIS_HOST=cache
+      - REDIS_URL=redis://cache:6379
     ports: 
       - "1337:1337"
     volumes:
